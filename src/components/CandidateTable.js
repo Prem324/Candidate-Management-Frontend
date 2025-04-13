@@ -1,17 +1,10 @@
 // CandidateTable.jsx
+import { MdDeleteOutline } from "react-icons/md";
+import { FaUserEdit } from "react-icons/fa";
 import React from "react";
+import "./CandidateTable.css";
 
-const CandidateTable = ({
-  candidates,
-  page,
-  setPage,
-  total,
-  limit,
-  onEdit,
-  onDelete,
-}) => {
-  const totalPages = Math.ceil(total / limit);
-
+const CandidateTable = ({ candidates, onEdit, onDelete }) => {
   return (
     <div className="table-container">
       <table className="candidate-table">
@@ -35,7 +28,7 @@ const CandidateTable = ({
           ) : (
             candidates.map((candidate) => (
               <tr key={candidate._id}>
-                <td>{candidate.name}</td>
+                <td className="name-style">{candidate.name}</td>
                 <td>{candidate.email}</td>
                 <td>{candidate.phone}</td>
                 <td>{candidate.experience}</td>
@@ -45,13 +38,13 @@ const CandidateTable = ({
                     className="edit-btn"
                     onClick={() => onEdit(candidate)}
                   >
-                    ✎
+                    <FaUserEdit className="icon" />
                   </button>
                   <button
                     className="delete-btn"
                     onClick={() => onDelete(candidate._id)}
                   >
-                    🗑
+                    <MdDeleteOutline className="icon" />
                   </button>
                 </td>
               </tr>
@@ -59,25 +52,6 @@ const CandidateTable = ({
           )}
         </tbody>
       </table>
-
-      {/* Pagination */}
-      <div className="pagination">
-        <button
-          onClick={() => setPage((p) => Math.max(p - 1, 1))}
-          disabled={page === 1}
-        >
-          ◀
-        </button>
-        <span>
-          {page} / {totalPages}
-        </span>
-        <button
-          onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-          disabled={page === totalPages}
-        >
-          ▶
-        </button>
-      </div>
     </div>
   );
 };

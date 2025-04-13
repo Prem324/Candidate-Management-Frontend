@@ -1,5 +1,6 @@
 // FilterPanel.jsx
 import React from "react";
+import "./FilterPanel.css";
 
 const FilterPanel = ({ filters, setFilters }) => {
   const handleGenderChange = (e) => {
@@ -17,9 +18,17 @@ const FilterPanel = ({ filters, setFilters }) => {
     });
   };
 
+  const clearFilters = () => {
+    setFilters({
+      gender: "",
+      experience: "",
+      skills: [],
+    });
+  };
+
   return (
     <div className="filter-panel">
-      <h3>Filter</h3>
+      <h3>Filters</h3>
       <div className="filter-group">
         <label>Gender</label>
         <div>
@@ -60,11 +69,11 @@ const FilterPanel = ({ filters, setFilters }) => {
           }
         >
           <option value="">All</option>
-          <option value="1 Year">1</option>
-          <option value="2 Years">2</option>
-          <option value="3 Years">3</option>
-          <option value="4 Years">4</option>
-          <option value="5+ Years">5+</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5+</option>
         </select>
       </div>
 
@@ -94,6 +103,9 @@ const FilterPanel = ({ filters, setFilters }) => {
           <input type="checkbox" value="SQL" onChange={handleSkillChange} /> SQL
         </div>
       </div>
+      <button className="clear-button" onClick={clearFilters}>
+        Clear Filters
+      </button>
     </div>
   );
 };

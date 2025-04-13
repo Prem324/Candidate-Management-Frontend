@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./CandidateForm.css";
 
 const CandidateForm = ({ onAdd, candidate, onClose }) => {
   const [formData, setFormData] = useState({
@@ -58,9 +59,12 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>{candidate ? "Edit Candidate" : "Add Candidate"}</h2>
-        <form onSubmit={handleSubmit}>
+        <h2 className="modal-heading">
+          {candidate ? "Edit Candidate" : "Add Candidate"}
+        </h2>
+        <form className="form-container" onSubmit={handleSubmit}>
           <input
+            className="form-input"
             name="name"
             type="text"
             value={formData.name}
@@ -69,6 +73,7 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
             placeholder="Name"
           />
           <input
+            className="form-input"
             name="phone"
             type="tel"
             value={formData.phone}
@@ -77,6 +82,7 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
             placeholder="Phone"
           />
           <input
+            className="form-input"
             name="email"
             type="email"
             value={formData.email}
@@ -85,13 +91,19 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
             placeholder="Email"
           />
 
-          <select name="gender" value={formData.gender} onChange={handleChange}>
+          <select
+            className="form-select"
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+          >
             <option>Male</option>
             <option>Female</option>
             <option>Other</option>
           </select>
 
           <select
+            className="form-select"
             name="experience"
             value={formData.experience}
             onChange={handleChange}
@@ -105,10 +117,10 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
 
           <label>Skills (Hold Ctrl/Cmd to select multiple)</label>
           <select
+            className="form-select"
             multiple
             value={formData.skills}
             onChange={handleSkillChange}
-            size={5}
           >
             <option value="JavaScript">JavaScript</option>
             <option value="React">React</option>
@@ -118,8 +130,10 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
           </select>
 
           <div className="form-buttons">
-            <button type="submit">{candidate ? "Update" : "Add"}</button>
-            <button type="button" onClick={onClose}>
+            <button className="form-button" type="submit">
+              {candidate ? "Update" : "Add"}
+            </button>
+            <button className="form-button" type="button" onClick={onClose}>
               Cancel
             </button>
           </div>

@@ -5,6 +5,14 @@ import CandidateForm from "./components/CandidateForm";
 import SearchBar from "./components/SearchBar";
 import FilterPanel from "./components/FilterPanel";
 import ConfirmModal from "./components/ConfirmModal";
+import { TfiMenuAlt } from "react-icons/tfi";
+import { CiFilter } from "react-icons/ci";
+import { IoMdSearch } from "react-icons/io";
+import { IoPersonAddOutline } from "react-icons/io5";
+import { IoChevronBackOutline } from "react-icons/io5";
+import { IoChevronForwardOutline } from "react-icons/io5";
+import { RiListIndefinite } from "react-icons/ri";
+
 import "./App.css";
 
 function App() {
@@ -59,49 +67,82 @@ function App() {
     fetchCandidates();
   };
 
+  const totalPages = Math.ceil(total / limit);
+
   return (
     <div className="App">
+      <h1 className="heading">Candidates Management Portal</h1>
       <div className="header">
-        <h1>Candidate Management</h1>
-        <div className="header-actions">
-          <button
-            onClick={() => setShowFilter(!showFilter)}
-            className="filter-toggle"
-          >
-            🔍 Filter
+        <div className="header-section">
+          <h1 className="header-heading">Candidates</h1>
+          <button className="add-btn" onClick={() => setShowForm(!showForm)}>
+            <IoPersonAddOutline className="icon" /> Add Candidate
           </button>
+        </div>
+
+        <div className="header-actions">
+          <div className="menus-list">
+            <TfiMenuAlt className="icon menu" />
+            <RiListIndefinite className="icon list" />
+          </div>
+          <div className="filters-section">
+            <div className="search-container">
+              <IoMdSearch className="search-icon" />
+              <SearchBar
+                className="search-input"
+                search={search}
+                setSearch={setSearch}
+              />
+            </div>
+
+            {/* Pagination */}
+            <div className="pagination">
+              <span className="page-no">
+                {page} / {totalPages}
+              </span>
+              <button
+                className="page-nav-btn"
+                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                disabled={page === 1}
+              >
+                <IoChevronBackOutline className="icon" />
+              </button>
+
+              <button
+                className="page-nav-btn"
+                onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+                disabled={page === totalPages}
+              >
+                <IoChevronForwardOutline className="icon" />
+              </button>
+            </div>
+            <button
+              onClick={() => setShowFilter(!showFilter)}
+              className="filter-toggle"
+            >
+              <CiFilter className="filter-icon" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <SearchBar search={search} setSearch={setSearch} />
+      {showForm && (
+        <CandidateForm
+          onAdd={() => {
+            fetchCandidates();
+            setShowForm(false);
+          }}
+          candidate={editCandidate}
+          clearEdit={() => setEditCandidate(null)}
+          onClose={() => {
+            setShowForm(false);
+            setEditCandidate(null);
+          }}
+        />
+      )}
 
       <div className="main-content">
-        {showFilter && (
-          <FilterPanel filters={filters} setFilters={setFilters} />
-        )}
-
         <div className="table-form">
-          <div className="top-bar">
-            <button className="add-btn" onClick={() => setShowForm(!showForm)}>
-              ➕ Add Candidate
-            </button>
-          </div>
-
-          {showForm && (
-            <CandidateForm
-              onAdd={() => {
-                fetchCandidates();
-                setShowForm(false);
-              }}
-              candidate={editCandidate}
-              clearEdit={() => setEditCandidate(null)}
-              onClose={() => {
-                setShowForm(false);
-                setEditCandidate(null);
-              }}
-            />
-          )}
-
           <CandidateTable
             candidates={candidates}
             page={page}
@@ -118,6 +159,9 @@ function App() {
             }}
           />
         </div>
+        {showFilter && (
+          <FilterPanel filters={filters} setFilters={setFilters} />
+        )}
       </div>
 
       <ConfirmModal
