@@ -2,9 +2,9 @@
 import React from "react";
 
 const FilterPanel = ({ filters, setFilters }) => {
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: checked ? name : "" }));
+  const handleGenderChange = (e) => {
+    const { value, checked } = e.target;
+    setFilters((prev) => ({ ...prev, gender: checked ? value : "" }));
   };
 
   const handleSkillChange = (e) => {
@@ -25,30 +25,27 @@ const FilterPanel = ({ filters, setFilters }) => {
         <div>
           <input
             type="checkbox"
-            name="gender"
             value="Male"
             checked={filters.gender === "Male"}
-            onChange={handleCheckboxChange}
+            onChange={handleGenderChange}
           />{" "}
           Male
         </div>
         <div>
           <input
             type="checkbox"
-            name="gender"
             value="Female"
             checked={filters.gender === "Female"}
-            onChange={handleCheckboxChange}
+            onChange={handleGenderChange}
           />{" "}
           Female
         </div>
         <div>
           <input
             type="checkbox"
-            name="gender"
             value="Other"
             checked={filters.gender === "Other"}
-            onChange={handleCheckboxChange}
+            onChange={handleGenderChange}
           />{" "}
           Other
         </div>
@@ -63,11 +60,11 @@ const FilterPanel = ({ filters, setFilters }) => {
           }
         >
           <option value="">All</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+          <option value="1 Year">1</option>
+          <option value="2 Years">2</option>
+          <option value="3 Years">3</option>
+          <option value="4 Years">4</option>
+          <option value="5+ Years">5+</option>
         </select>
       </div>
 
@@ -82,20 +79,19 @@ const FilterPanel = ({ filters, setFilters }) => {
           JavaScript
         </div>
         <div>
-          <input type="checkbox" value="Python" onChange={handleSkillChange} />{" "}
-          Python
-        </div>
-        <div>
           <input type="checkbox" value="React" onChange={handleSkillChange} />{" "}
           React
         </div>
         <div>
-          <input type="checkbox" value="HTML" onChange={handleSkillChange} />{" "}
-          HTML
+          <input type="checkbox" value="Node.js" onChange={handleSkillChange} />{" "}
+          Node.js
         </div>
         <div>
-          <input type="checkbox" value="Angular" onChange={handleSkillChange} />{" "}
-          Angular
+          <input type="checkbox" value="Python" onChange={handleSkillChange} />{" "}
+          Python
+        </div>
+        <div>
+          <input type="checkbox" value="SQL" onChange={handleSkillChange} /> SQL
         </div>
       </div>
     </div>

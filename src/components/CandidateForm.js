@@ -13,7 +13,10 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
 
   useEffect(() => {
     if (candidate) {
-      setFormData(candidate);
+      setFormData({
+        ...candidate,
+        skills: candidate.skills || [], // Ensure skills is an array
+      });
     }
   }, [candidate]);
 
@@ -26,29 +29,30 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
   };
 
   const handleSkillChange = (e) => {
-    const { options } = e.target;
-    const selected = [];
-    for (let i = 0; i < options.length; i++) {
-      if (options[i].selected) selected.push(options[i].value);
-    }
-    setFormData((prev) => ({ ...prev, skills: selected }));
+    const selectedSkills = Array.from(e.target.selectedOptions).map(
+      (option) => option.value
+    );
+    setFormData((prev) => ({ ...prev, skills: selectedSkills }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (candidate) {
-      await axios.put(
-        `https://candidate-mangament-backend.onrender.com/api/candidates/${candidate._id}`,
-        formData
-      );
-    } else {
-      await axios.post(
-        "https://candidate-mangament-backend.onrender.com/api/candidates",
-        formData
-      );
+
+    const url = candidate
+      ? `https://candidate-mangament-backend.onrender.com/api/candidates/${candidate._id}`
+      : "https://candidate-mangament-backend.onrender.com/api/candidates";
+
+    try {
+      if (candidate) {
+        await axios.put(url, formData);
+      } else {
+        await axios.post(url, formData);
+      }
+      onAdd();
+      onClose();
+    } catch (err) {
+      console.error("❌ Error submitting candidate:", err);
     }
-    onAdd();
-    onClose();
   };
 
   return (
@@ -99,7 +103,13 @@ const CandidateForm = ({ onAdd, candidate, onClose }) => {
             <option>5+ Years</option>
           </select>
 
-          <select multiple value={formData.skills} onChange={handleSkillChange}>
+          <label>Skills (Hold Ctrl/Cmd to select multiple)</label>
+          <select
+            multiple
+            value={formData.skills}
+            onChange={handleSkillChange}
+            size={5}
+          >
             <option value="JavaScript">JavaScript</option>
             <option value="React">React</option>
             <option value="Node.js">Node.js</option>

@@ -28,10 +28,14 @@ function App() {
   const fetchCandidates = useCallback(async () => {
     const params = {
       search,
+      experience: filters.experience,
       ...filters,
+      skills: filters.skills.join(","),
       page,
       limit,
     };
+    console.log("Filters:", filters);
+
     const res = await axios.get(
       "https://candidate-mangament-backend.onrender.com/api/candidates",
       {
